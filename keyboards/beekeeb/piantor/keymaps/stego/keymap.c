@@ -30,7 +30,7 @@ enum custom_keycods {
     // Nav layer
     CKC_DOWN, // Alt
     CKC_UP, // Shift
-    CKC_RIGHT, // Ctrl
+    CKC_RGHT, // Ctrl
     CKC_F4, // Ctrl
     CKC_F5, // Shift
     CKC_F6, // Alt
@@ -47,14 +47,12 @@ enum combos {
     COMBO_GUI,
 };
 
-const uint16_t PROGMEM osl_fun_combo[] = {LM_THUMB, RM_THUMB, COMBO_END};
-const uint16_t PROGMEM gui_combo[] = {LR_THUMB, KC_G, COMBO_END};
-const uint16_t PROGMEM caps_word_combo[] = {LL_THUMB, RR_THUMB, COMBO_END};
+const uint16_t PROGMEM osl_fun_combo[] = {OSL(1), KC_SPC, COMBO_END};
+const uint16_t PROGMEM gui_combo[] = {OSL(2), KC_G, COMBO_END};
 
 combo_t key_combos[] = {
-    [COMBO_OSL_FN]  = COMBO(osl_fun_combo, OSL(FN_LAYER)),
+    [COMBO_OSL_FN]  = COMBO(osl_fun_combo, OSL(3)),
     [COMBO_GUI] = COMBO(gui_combo, KC_LGUI),
-    [COMBO_CAPS_WORD] = COMBO(caps_word_combo, CW_TOGG),
 };
 
 
@@ -86,27 +84,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 void on_smtd_action(uint16_t keycode, smtd_action action, uint8_t tap_count) {
     switch (keycode) {
         SMTD_MT(CKC_R, KC_R, KC_LALT, 2)
-        SMTD_MTE(CKC_S, KC_S, KC_LSHIFT, 2)
-        SMTD_MT(CKC_T, KC_T, KC_LCTRL, 2)
-        SMTD_MT(CKC_N, KC_N, KC_LCTRL, 2)
-        SMTD_MTE(CKC_E, KC_E, KC_LSHIFT, 2)
-        SMTD_MT(CKC_I, KC_I, KC_LALT, 2)
+        SMTD_MTE(CKC_S, KC_S, KC_LSFT, 2)
+        SMTD_MT(CKC_T, KC_T, KC_LCTL, 2)
+        SMTD_MT(CKC_N, KC_N, KC_RCTL, 2)
+        SMTD_MTE(CKC_E, KC_E, KC_RSFT, 2)
+        SMTD_MT(CKC_I, KC_I, KC_RALT, 2)
 
         SMTD_MT(CKC_2, KC_2, KC_LALT, 2)
-        SMTD_MT(CKC_3, KC_3, KC_LSHIFT, 2)
-        SMTD_MT(CKC_4, KC_4, KC_LCTRL, 2)
-        SMTD_MT(CKC_7, KC_7, KC_LCTRL, 2)
-        SMTD_MT(CKC_8, KC_8, KC_LSHIFT, 2)
-        SMTD_MT(CKC_9, KC_9, KC_LALT, 2)
+        SMTD_MT(CKC_3, KC_3, KC_LSFT, 2)
+        SMTD_MT(CKC_4, KC_4, KC_LCTL, 2)
+        SMTD_MT(CKC_7, KC_7, KC_RCTL, 2)
+        SMTD_MT(CKC_8, KC_8, KC_RSFT, 2)
+        SMTD_MT(CKC_9, KC_9, KC_RALT, 2)
 
-        SMTD_MT(CKC_SCLN, KC_SCLN, KC_LCTRL, 2)
-        SMTD_MT(CKC_EQL, KC_EQL, KC_LCTRL, 2)
+        SMTD_MT(CKC_SCLN, KC_SCLN, KC_LCTL, 2)
+        SMTD_MT(CKC_EQL, KC_EQL, KC_RCTL, 2)
 
         SMTD_MT(CKC_DOWN, KC_DOWN, KC_LALT, 2)
-        SMTD_MT(CKC_UP, KC_UP, KC_LSHIFT, 2)
-        SMTD_MT(CKC_RIGHT, KC_RIGHT, KC_LCTRL, 2)
-        SMTD_MT(CKC_F4, KC_F4, KC_LCTRL, 2)
-        SMTD_MT(CKC_F5, KC_F5, KC_LSHIFT, 2)
-        SMTD_MT(CKC_F6, KC_F6, KC_LALT, 2)
+        SMTD_MT(CKC_UP, KC_UP, KC_LSFT, 2)
+        SMTD_MT(CKC_RGHT, KC_RGHT, KC_LCTL, 2)
+        SMTD_MT(CKC_F4, KC_F4, KC_RCTL, 2)
+        SMTD_MT(CKC_F5, KC_F5, KC_RSFT, 2)
+        SMTD_MT(CKC_F6, KC_F6, KC_RALT, 2)
     }
 }
