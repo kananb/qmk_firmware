@@ -3,16 +3,11 @@
 
 #define LAYOUT LAYOUT_split_3x6_3
 
-/* Custom keycodes */
-enum custom_keycodes {
-    CKC_CW_OFF = SAFE_RANGE,
-};
-
 
 /* Combos */
+
 enum combos {
     COMBO_OSL_FN,
-    COMBO_TO_FN,
     COMBO_GUI,
 
     COMBO_OSM_LCTL,
@@ -23,9 +18,8 @@ enum combos {
     COMBO_OSM_RALT,
 };
 
-const uint16_t PROGMEM osl_fun_combo[] = {OSL(1), KC_SPC, COMBO_END};
-const uint16_t PROGMEM to_fun_combo[] = {OSL(2), KC_ENT, COMBO_END};
-const uint16_t PROGMEM gui_combo[] = {OSL(2), KC_G, COMBO_END};
+const uint16_t PROGMEM osl_fun_combo[] = {OSL(1), LT(2,KC_SPC), COMBO_END};
+const uint16_t PROGMEM gui_combo[] = {OSL(1), KC_G, COMBO_END};
 
 const uint16_t PROGMEM osm_lctl_combo[] = {LCTL_T(KC_T), KC_P, COMBO_END};
 const uint16_t PROGMEM osm_lshft_combo[] = {LSFT_T(KC_S), KC_F, COMBO_END};
@@ -36,7 +30,6 @@ const uint16_t PROGMEM osm_ralt_combo[] = {RALT_T(KC_I), KC_Y, COMBO_END};
 
 combo_t key_combos[] = {
     [COMBO_OSL_FN]  = COMBO(osl_fun_combo, OSL(3)),
-    [COMBO_TO_FN] = COMBO(to_fun_combo, TO(3)),
     [COMBO_GUI] = COMBO(gui_combo, KC_LGUI),
 
     [COMBO_OSM_LCTL] = COMBO(osm_lctl_combo, OSM(MOD_LCTL)),
@@ -49,16 +42,17 @@ combo_t key_combos[] = {
 
 
 /* Key mapping */
+
 #define _LAYER0 0
 #define _LAYER1 1
 #define _LAYER2 2
 #define _LAYER3 3
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_LAYER0] = LAYOUT(KC_NO, KC_NO, KC_W, KC_F, KC_P, KC_B, KC_J, KC_L, KC_U, KC_Y, KC_NO, KC_NO, KC_Q, KC_A, LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G, KC_M, RCTL_T(KC_N), RSFT_T(KC_E), RALT_T(KC_I), KC_O, KC_QUOT, KC_NO, KC_Z, KC_X, KC_C, KC_D, KC_V, KC_K, KC_H, KC_COMM, KC_DOT, KC_SLSH, KC_NO, KC_NO, OSL(1), OSL(2), KC_ENT, KC_SPC, KC_NO),
-    [_LAYER1] = LAYOUT(KC_NO, KC_NO, KC_ESC, KC_DEL, KC_TAB, LGUI(KC_ESC), KC_HOME, KC_PGUP, KC_PGDN, KC_END, KC_NO, KC_NO, KC_UNDS, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, CW_TOGG, KC_NO, LCTL(KC_Z), LCTL(KC_Y), LCTL(KC_C), LCTL(KC_V), LGUI(KC_L), CKC_CW_OFF, KC_BSPC, KC_COMM, KC_DOT, KC_SLSH, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_ENT, KC_TRNS, KC_NO),
-    [_LAYER2] = LAYOUT(KC_NO, KC_NO, KC_LBRC, KC_RBRC, KC_GRV, KC_BSLS, KC_PIPE, KC_DQUO, KC_ASTR, KC_SLSH, KC_NO, KC_NO, KC_UNDS, KC_DLR, KC_LPRN, KC_RPRN, LCTL_T(KC_SCLN), KC_AT, KC_AMPR, RCTL_T(KC_EQL), KC_PLUS, KC_MINS, KC_EXLM, KC_TILD, KC_NO, KC_PERC, KC_LCBR, KC_RCBR, KC_COLN, KC_CIRC, KC_HASH, KC_QUOT, KC_LT, KC_GT, KC_QUES, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO),
-    [_LAYER3] = LAYOUT(KC_NO, KC_NO, KC_MUTE, KC_VOLD, KC_VOLU, KC_MPLY, KC_F10, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO, TO(0), KC_LEFT, LALT_T(KC_DOWN), LSFT_T(KC_UP), LCTL_T(KC_RGHT), KC_PSCR, KC_F11, RCTL_T(KC_F4), RSFT_T(KC_F5), RALT_T(KC_F6), KC_NO, QK_BOOT, KC_NO, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, KC_NO, KC_F12, KC_F1, KC_F2, KC_F3, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO) 
+    [_LAYER0] = LAYOUT(KC_NO, KC_NO, KC_W, KC_F, KC_P, KC_B, KC_J, KC_L, KC_U, KC_Y, KC_NO, KC_NO, KC_Q, KC_A, LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G, KC_M, RCTL_T(KC_N), RSFT_T(KC_E), RALT_T(KC_I), KC_O, KC_QUOT, KC_NO, KC_Z, KC_X, KC_C, KC_D, KC_V, KC_K, KC_H, KC_COMM, KC_DOT, KC_SLSH, KC_NO, KC_NO, OSL(1), KC_NO, KC_NO, LT(2,KC_SPC), KC_NO),
+    [_LAYER1] = LAYOUT(KC_NO, KC_NO, KC_ESC, KC_DEL, KC_TAB, LGUI(KC_ESC), KC_HOME, KC_PGUP, KC_PGDN, KC_END, KC_NO, KC_NO, KC_UNDS, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, CW_TOGG, KC_NO, LCTL(KC_Z), KC_ENT, LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), QK_LEAD, KC_BSPC, KC_COMM, KC_DOT, KC_SLSH, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
+    [_LAYER2] = LAYOUT(KC_NO, KC_NO, KC_LBRC, KC_RBRC, KC_GRV, KC_BSLS, KC_PIPE, KC_DQUO, KC_ASTR, KC_SLSH, KC_NO, KC_NO, KC_UNDS, KC_DLR, KC_LPRN, KC_RPRN, LCTL_T(KC_SCLN), KC_AT, KC_AMPR, RCTL_T(KC_EQL), KC_PLUS, KC_MINS, KC_EXLM, KC_TILD, KC_NO, KC_PERC, KC_LCBR, KC_RCBR, KC_COLN, KC_CIRC, KC_HASH, KC_QUOT, KC_LT, KC_GT, KC_QUES, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
+    [_LAYER3] = LAYOUT(KC_NO, KC_NO, KC_MUTE, KC_VOLD, KC_VOLU, KC_MPLY, KC_F10, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO, TO(0), KC_LEFT, LALT_T(KC_DOWN), LSFT_T(KC_UP), LCTL_T(KC_RGHT), KC_PSCR, KC_F11, RCTL_T(KC_F4), RSFT_T(KC_F5), RALT_T(KC_F6), KC_NO, QK_BOOT, KC_NO, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, KC_NO, KC_F12, KC_F1, KC_F2, KC_F3, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO)
 };
 
 
@@ -84,14 +78,6 @@ Side side_of_key(keyrecord_t* key_record) {
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (!process_achordion(keycode, record)) {
         return false;
-    }
-
-    switch (keycode) {
-        case CKC_CW_OFF:
-            if (record->event.pressed) {
-                caps_word_off();
-            }
-            return false;
     }
 
     return true; // Process all other keycodes normally
@@ -131,6 +117,11 @@ void matrix_scan_user(void) {
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) {
     Side tap_hold_side = side_of_key(tap_hold_record);
     Side other_side = side_of_key(other_record);
+    uint8_t tap_hold_row = tap_hold_record->event.key.row;
+    uint8_t other_row = other_record->event.key.row;
+
+    if (layer_state_is(_LAYER1) && tap_hold_side == LEFT && tap_hold_row != other_row)
+        return true; // Allow chords between rows on the left side of layer 1
 
     return tap_hold_side == NONE || tap_hold_side != other_side;
 }
