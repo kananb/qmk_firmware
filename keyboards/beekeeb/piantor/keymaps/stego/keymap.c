@@ -96,7 +96,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t* record) {
     if ((side == LEFT && col <= 1) || (side == RIGHT && col >= 4))
         return TAPPING_TERM + 70; // Increase tapping term for pinky keys.
     else if ((side == LEFT && col == 2) || (side == RIGHT && col == 3))
-        return TAPPING_TERM + 40; // Increase tapping term for ring keys.
+        return TAPPING_TERM + 70; // Increase tapping term for ring keys.
     else return TAPPING_TERM; // Otherwise, force hold and disable key repeating.
 }
 
