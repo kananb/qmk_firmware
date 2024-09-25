@@ -29,7 +29,7 @@ const uint16_t PROGMEM gui_combo[] = {OSL(2), KC_G, COMBO_END};
 
 const uint16_t PROGMEM osm_lctl_combo[] = {LCTL_T(KC_T), KC_P, COMBO_END};
 const uint16_t PROGMEM osm_lshft_combo[] = {LSFT_T(KC_S), KC_F, COMBO_END};
-const uint16_t PROGMEM osm_lalt_combo[] = {LALT_T(KC_R), KC_B, COMBO_END};
+const uint16_t PROGMEM osm_lalt_combo[] = {LALT_T(KC_R), KC_W, COMBO_END};
 const uint16_t PROGMEM osm_rctl_combo[] = {RCTL_T(KC_N), KC_L, COMBO_END};
 const uint16_t PROGMEM osm_rshft_combo[] = {RSFT_T(KC_E), KC_U, COMBO_END};
 const uint16_t PROGMEM osm_ralt_combo[] = {RALT_T(KC_I), KC_Y, COMBO_END};
@@ -62,6 +62,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
+/* Helper functions */
+
+typedef enum Side {
+    NONE,
+    LEFT,
+    RIGHT,
+} Side;
+
+Side side_of_key(keyrecord_t* key_record) {
+    uint8_t row = key_record->event.key.row;
+
+    if (row <= 2) return LEFT;
+    else if (row <= 6) return RIGHT;
+    else return NONE;
+}
+
+
 /* QMK functions */
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
@@ -81,25 +98,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 }
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t* record) {
-    switch (keycode) {
-        // TODO: Probably want to change this to use the row of the key instead.
-        case LGUI_T(KC_Z):
-        case RGUI_T(KC_SLSH):
-        case LGUI_T(KC_DLR):
-        case RGUI_T(KC_PERC):
-        case LGUI_T(KC_WBAK):
-            return TAPPING_TERM + 70; // Increase tapping term for pinky keys.
-        case LALT_T(KC_X):
-        case RALT_T(KC_DOT):
-        case LALT_T(KC_LCBR):
-        // case RALT_T(KC_GT): same key code as KC_DOT
-        case LALT_T(KC_D):
-        case LALT_T(KC_PGDN):
-        case RALT_T(KC_F3):
-            return TAPPING_TERM + 40; // Increase tapping term for ring keys.
-    }
+    Side side = side_of_key(record);
+    uint8_t col = record->event.key.col;
 
-    return TAPPING_TERM; // Otherwise, force hold and disable key repeating.
+    if ((side == LEFT && col <= 1) || (side == RIGHT && col >= 4))
+        return TAPPING_TERM + 70; // Increase tapping term for pinky keys.
+    else if ((side == LEFT && col == 2) || (side == RIGHT && col == 3))
+        return TAPPING_TERM + 40; // Increase tapping term for ring keys.
+    else return TAPPING_TERM; // Otherwise, force hold and disable key repeating.
 }
 
 uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
@@ -120,36 +126,6 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
 
 void matrix_scan_user(void) {
     achordion_task();
-}
-
-typedef enum Side {
-    NONE,
-    LEFT,
-    RIGHT,
-} Side;
-
-Side side_of_key(keyrecord_t* key_record) {
-    // Left alpha coordinates
-    const uint8_t left_alpha_start[2] = {0, 1};
-    const uint8_t left_alpha_end[2]   = {2, 5};
-
-    if (key_record->event.key.row >= left_alpha_start[0] && key_record->event.key.row <= left_alpha_end[0]) {
-        if (key_record->event.key.col >= left_alpha_start[1] && key_record->event.key.col <= left_alpha_end[1]) {
-            return LEFT;
-        }
-    }
-
-    // Right alpha coordinates
-    const uint8_t right_alpha_start[2] = {4, 0};
-    const uint8_t right_alpha_end[2]   = {6, 5};
-
-    if (key_record->event.key.row >= right_alpha_start[0] && key_record->event.key.row <= right_alpha_end[0]) {
-        if (key_record->event.key.col >= right_alpha_start[1] && key_record->event.key.col <= right_alpha_end[1]) {
-            return RIGHT;
-        }
-    }
-
-    return NONE;
 }
 
 bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) {
