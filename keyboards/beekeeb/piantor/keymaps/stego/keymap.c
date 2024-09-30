@@ -24,7 +24,6 @@ enum custom_keycodes {
 };
 
 enum td_keycodes {
-    LEAD_LAYER,
     LOCK_COMPUTER,
 };
 
@@ -49,8 +48,6 @@ typedef struct {
 } td_tap_t;
 
 td_state_t cur_dance(tap_dance_state_t *state);
-void ll_finished(tap_dance_state_t *state, void *user_data);
-void ll_reset(tap_dance_state_t *state, void *user_data);
 void lc_finished(tap_dance_state_t *state, void *user_data);
 void lc_reset(tap_dance_state_t *state, void *user_data);
 
@@ -118,7 +115,7 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LAYER0] = LAYOUT(KC_NO, KC_NO, KC_W, KC_F, KC_P, KC_B, KC_J, KC_L, KC_U, KC_Y, KC_NO, KC_NO, KC_NO, KC_A, LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G, KC_M, RCTL_T(KC_N), RSFT_T(KC_E), RALT_T(KC_I), KC_O, KC_NO, KC_NO, KC_Z, KC_X, KC_C, KC_D, KC_V, KC_K, KC_H, KC_COMM, KC_DOT, KC_Q, KC_NO, KC_NO, LTHUMB, KC_NO, KC_NO, RTHUMB, KC_NO),
     [_LAYER1] = LAYOUT(KC_NO, KC_NO, KC_LBRC, KC_RBRC, KC_GRV, KC_CIRC, KC_PIPE, KC_DQUO, KC_ASTR, KC_SLSH, KC_NO, KC_NO, KC_NO, KC_DLR, KC_LPRN, KC_RPRN, LCTL_T(KC_SCLN), KC_AT, KC_AMPR, RCTL_T(KC_EQL), KC_PLUS, KC_MINS, KC_EXLM, KC_NO, KC_NO, KC_PERC, KC_LCBR, KC_RCBR, KC_COLN, KC_BSLS, KC_HASH, KC_QUOT, KC_LT, KC_GT, KC_QUES, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
-    [_LAYER2] = LAYOUT(KC_NO, KC_NO, KC_ESC, KC_DEL, KC_TAB, TD(LOCK_COMPUTER), KC_HOME, KC_PGUP, KC_PGDN, KC_END, KC_NO, KC_NO, KC_NO, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, KC_NO, KC_NO, LCTL(KC_Z), LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), KC_NO, KC_UNDS, CW_TOGG, KC_DOT, KC_SLSH, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
+    [_LAYER2] = LAYOUT(KC_NO, KC_NO, KC_ESC, KC_DEL, KC_TAB, TD(LOCK_COMPUTER), KC_HOME, KC_PGUP, KC_PGDN, KC_END, KC_NO, KC_NO, KC_NO, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, KC_NO, KC_NO, LCTL(KC_Z), LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), DM_PLY1, KC_UNDS, CW_TOGG, KC_DOT, DM_REC1, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
     [_LAYER3] = LAYOUT(KC_NO, KC_NO, KC_MUTE, KC_VOLD, KC_VOLU, KC_MPLY, KC_F10, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO, KC_NO, KC_LEFT, LALT_T(KC_DOWN), LSFT_T(KC_UP), LCTL_T(KC_RGHT), KC_PSCR, KC_F11, RCTL_T(KC_F4), RSFT_T(KC_F5), RALT_T(KC_F6), OSM(MOD_RGUI), KC_NO, KC_NO, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, LLOCK, KC_F12, KC_F1, KC_F2, KC_F3, QK_BOOT, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO)
 };
 
@@ -145,6 +142,7 @@ bool is_thumb_key(keyrecord_t* key_record) {
     return row == 7 || row == 3;
 }
 
+
 /* Tap dance functions */
 
 td_state_t cur_dance(tap_dance_state_t *state) {
@@ -156,31 +154,6 @@ td_state_t cur_dance(tap_dance_state_t *state) {
         else return TD_UNKNOWN;
     }
     else return TD_UNKNOWN;
-}
-
-static td_tap_t ll_tap_state = {
-    .is_press_action = true,
-    .state = TD_NONE
-};
-void ll_finished(tap_dance_state_t *state, void *user_data) {
-    ll_tap_state.state = cur_dance(state);
-    switch (ll_tap_state.state) {
-        case TD_SINGLE_TAP:
-            leader_start();
-            break;
-        case TD_SINGLE_HOLD:
-            layer_on(LL_LAYER);
-            break;
-        default:
-            break;
-    }
-}
-void ll_reset(tap_dance_state_t *state, void *user_data) {
-    // If the key was held down and now is released then switch off the layer
-    if (ll_tap_state.state == TD_SINGLE_HOLD) {
-        layer_off(LL_LAYER);
-    }
-    ll_tap_state.state = TD_NONE;
 }
 
 static td_tap_t lc_tap_state = {
@@ -206,7 +179,6 @@ void lc_reset(tap_dance_state_t *state, void *user_data) {
 
 // Associate our tap dance key with its functionality
 tap_dance_action_t tap_dance_actions[] = {
-    [LEAD_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ll_finished, ll_reset),
     [LOCK_COMPUTER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lc_finished, lc_reset),
 };
 
@@ -299,7 +271,6 @@ bool caps_word_press_user(uint16_t keycode) {
         case KC_DEL:
         case KC_UNDS:
         case QK_LEAD:
-        case TD(LEAD_LAYER):
             return true;
 
         default:
