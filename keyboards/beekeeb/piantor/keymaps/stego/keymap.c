@@ -20,7 +20,7 @@
 
 enum custom_keycodes {
     LLOCK = SAFE_RANGE,
-    CTL_BSPC_COMBO,
+    BSPC_COMBO,
 };
 
 enum td_keycodes {
@@ -72,8 +72,8 @@ enum combos {
     COMBO_OSM_RALT,
 
     COMBO_ENT,
+    COMBO_BSPC_1H,
     COMBO_BSPC,
-    COMBO_CTL_BSPC,
 };
 
 const uint16_t PROGMEM osl_fun_combo[] = {LTHUMB, RTHUMB, COMBO_END};
@@ -90,8 +90,8 @@ const uint16_t PROGMEM osm_rshft_combo[] = {RSFT_T(KC_E), KC_U, COMBO_END};
 const uint16_t PROGMEM osm_ralt_combo[] = {RALT_T(KC_I), KC_Y, COMBO_END};
 
 const uint16_t PROGMEM ent_combo[] = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM bspc_combo[] = {KC_C, KC_D, COMBO_END};
-const uint16_t PROGMEM ctl_bspc_combo[] = {KC_X, KC_D, COMBO_END};
+const uint16_t PROGMEM bspc_1h_combo[] = {KC_W, KC_F, COMBO_END};
+const uint16_t PROGMEM bspc_combo[] = {LSFT_T(KC_S), KC_H, COMBO_END};
 
 combo_t key_combos[] = {
     [COMBO_OSL_FN]  = COMBO(osl_fun_combo, OSL(NAV)),
@@ -108,8 +108,8 @@ combo_t key_combos[] = {
     [COMBO_OSM_RALT] = COMBO(osm_ralt_combo, OSM(MOD_RALT)),
 
     [COMBO_ENT] = COMBO(ent_combo, KC_ENT),
-    [COMBO_BSPC] = COMBO(bspc_combo, KC_BSPC),
-    [COMBO_CTL_BSPC] = COMBO(ctl_bspc_combo, CTL_BSPC_COMBO),
+    [COMBO_BSPC_1H] = COMBO(bspc_1h_combo, KC_BSPC),
+    [COMBO_BSPC] = COMBO(bspc_combo, BSPC_COMBO),
 };
 
 
@@ -228,25 +228,25 @@ void leader_end_user(void) {
 
 /* QMK functions */
 
-static bool ctl_bspc_combo_active = false;
+static bool bspc_combo_active = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (!process_achordion(keycode, record)) return false;
     if (!process_layer_lock(keycode, record, LLOCK)) return false;
 
     switch (keycode) {
-        case CTL_BSPC_COMBO:
+        case BSPC_COMBO:
             if (record->event.pressed) {
-                tap_code16(LCTL(KC_BSPC));
-                ctl_bspc_combo_active = true;
+                tap_code(KC_BSPC);
+                bspc_combo_active = true;
             } else {
-                ctl_bspc_combo_active = false;
+                bspc_combo_active = false;
             }
             return false;
-        case KC_D:
-            if (ctl_bspc_combo_active) {
+        case KC_H:
+            if (bspc_combo_active) {
                 if (record->event.pressed) {
-                    tap_code16(LCTL(KC_BSPC));
+                    tap_code(KC_BSPC);
                 }
                 return false;
             }
