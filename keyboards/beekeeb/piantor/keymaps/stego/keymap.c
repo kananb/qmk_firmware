@@ -11,8 +11,8 @@
 #define _LAYER3 3
 
 #define ALPHA _LAYER0
-#define NUM _LAYER1
-#define SYM _LAYER2
+#define SYM _LAYER1
+#define NUM _LAYER2
 #define NAV _LAYER3
 
 
@@ -20,6 +20,7 @@
 
 enum custom_keycodes {
     LLOCK = SAFE_RANGE,
+    CTL_BSPC_COMBO,
 };
 
 enum td_keycodes {
@@ -29,7 +30,7 @@ enum td_keycodes {
 
 #define LL_LAYER SYM
 #define LTHUMB LT(NUM, KC_SPC)
-#define RTHUMB TD(LEAD_LAYER)
+#define RTHUMB OSL(SYM)
 
 
 /* Tap dance definitions */
@@ -69,6 +70,10 @@ enum combos {
     COMBO_OSM_RCTL,
     COMBO_OSM_RSHFT,
     COMBO_OSM_RALT,
+
+    COMBO_ENT,
+    COMBO_BSPC,
+    COMBO_CTL_BSPC,
 };
 
 const uint16_t PROGMEM osl_fun_combo[] = {LTHUMB, RTHUMB, COMBO_END};
@@ -84,6 +89,10 @@ const uint16_t PROGMEM osm_rctl_combo[] = {RCTL_T(KC_N), KC_L, COMBO_END};
 const uint16_t PROGMEM osm_rshft_combo[] = {RSFT_T(KC_E), KC_U, COMBO_END};
 const uint16_t PROGMEM osm_ralt_combo[] = {RALT_T(KC_I), KC_Y, COMBO_END};
 
+const uint16_t PROGMEM ent_combo[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM bspc_combo[] = {KC_C, KC_D, COMBO_END};
+const uint16_t PROGMEM ctl_bspc_combo[] = {KC_X, KC_D, COMBO_END};
+
 combo_t key_combos[] = {
     [COMBO_OSL_FN]  = COMBO(osl_fun_combo, OSL(NAV)),
     [COMBO_GUI] = COMBO(gui_combo, KC_LGUI),
@@ -97,16 +106,20 @@ combo_t key_combos[] = {
     [COMBO_OSM_RCTL] = COMBO(osm_rctl_combo, OSM(MOD_RCTL)),
     [COMBO_OSM_RSHFT] = COMBO(osm_rshft_combo, OSM(MOD_RSFT)),
     [COMBO_OSM_RALT] = COMBO(osm_ralt_combo, OSM(MOD_RALT)),
+
+    [COMBO_ENT] = COMBO(ent_combo, KC_ENT),
+    [COMBO_BSPC] = COMBO(bspc_combo, KC_BSPC),
+    [COMBO_CTL_BSPC] = COMBO(ctl_bspc_combo, CTL_BSPC_COMBO),
 };
 
 
 /* Key mapping */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [ALPHA] = LAYOUT(KC_NO, KC_NO, KC_W, KC_F, KC_P, KC_B, KC_J, KC_L, KC_U, KC_Y, KC_NO, KC_NO, KC_Q, KC_A, LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G, KC_M, RCTL_T(KC_N), RSFT_T(KC_E), RALT_T(KC_I), KC_O, KC_QUOT, KC_NO, KC_Z, KC_X, KC_C, KC_D, KC_V, KC_K, KC_H, KC_COMM, KC_DOT, KC_SLSH, KC_NO, KC_NO, LTHUMB, KC_NO, KC_NO, RTHUMB, KC_NO),
-    [NUM] = LAYOUT(KC_NO, KC_NO, KC_ESC, KC_DEL, KC_TAB, TD(LOCK_COMPUTER), KC_HOME, KC_PGUP, KC_PGDN, KC_END, KC_NO, KC_NO, KC_UNDS, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, CW_TOGG, KC_NO, LCTL(KC_Z), KC_ENT, LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), QK_LEAD, KC_BSPC, KC_COMM, KC_DOT, KC_SLSH, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
-    [SYM] = LAYOUT(KC_NO, KC_NO, KC_LBRC, KC_RBRC, KC_GRV, KC_BSLS, KC_PIPE, KC_DQUO, KC_ASTR, KC_SLSH, KC_NO, KC_NO, KC_UNDS, KC_DLR, KC_LPRN, KC_RPRN, LCTL_T(KC_SCLN), KC_AT, KC_AMPR, RCTL_T(KC_EQL), KC_PLUS, KC_MINS, KC_EXLM, KC_TILD, KC_NO, KC_PERC, KC_LCBR, KC_RCBR, KC_COLN, KC_CIRC, KC_HASH, KC_QUOT, KC_LT, KC_GT, KC_QUES, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
-    [NAV] = LAYOUT(KC_NO, KC_NO, KC_MUTE, KC_VOLD, KC_VOLU, KC_MPLY, KC_F10, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO, LLOCK, KC_LEFT, LALT_T(KC_DOWN), LSFT_T(KC_UP), LCTL_T(KC_RGHT), KC_PSCR, KC_F11, RCTL_T(KC_F4), RSFT_T(KC_F5), RALT_T(KC_F6), OSM(MOD_RGUI), QK_BOOT, KC_NO, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, KC_NO, KC_F12, KC_F1, KC_F2, KC_F3, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO)
+    [_LAYER0] = LAYOUT(KC_NO, KC_NO, KC_W, KC_F, KC_P, KC_B, KC_J, KC_L, KC_U, KC_Y, KC_NO, KC_NO, KC_NO, KC_A, LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G, KC_M, RCTL_T(KC_N), RSFT_T(KC_E), RALT_T(KC_I), KC_O, KC_NO, KC_NO, KC_Z, KC_X, KC_C, KC_D, KC_V, KC_K, KC_H, KC_COMM, KC_DOT, KC_Q, KC_NO, KC_NO, LTHUMB, KC_NO, KC_NO, RTHUMB, KC_NO),
+    [_LAYER1] = LAYOUT(KC_NO, KC_NO, KC_LBRC, KC_RBRC, KC_GRV, KC_CIRC, KC_PIPE, KC_DQUO, KC_ASTR, KC_SLSH, KC_NO, KC_NO, KC_NO, KC_DLR, KC_LPRN, KC_RPRN, LCTL_T(KC_SCLN), KC_AT, KC_AMPR, RCTL_T(KC_EQL), KC_PLUS, KC_MINS, KC_EXLM, KC_NO, KC_NO, KC_PERC, KC_LCBR, KC_RCBR, KC_COLN, KC_BSLS, KC_HASH, KC_QUOT, KC_LT, KC_GT, KC_QUES, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
+    [_LAYER2] = LAYOUT(KC_NO, KC_NO, KC_ESC, KC_DEL, KC_TAB, TD(LOCK_COMPUTER), KC_HOME, KC_PGUP, KC_PGDN, KC_END, KC_NO, KC_NO, KC_NO, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, KC_NO, KC_NO, LCTL(KC_Z), LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), KC_NO, KC_UNDS, CW_TOGG, KC_DOT, KC_SLSH, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
+    [_LAYER3] = LAYOUT(KC_NO, KC_NO, KC_MUTE, KC_VOLD, KC_VOLU, KC_MPLY, KC_F10, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO, KC_NO, KC_LEFT, LALT_T(KC_DOWN), LSFT_T(KC_UP), LCTL_T(KC_RGHT), KC_PSCR, KC_F11, RCTL_T(KC_F4), RSFT_T(KC_F5), RALT_T(KC_F6), OSM(MOD_RGUI), KC_NO, KC_NO, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, LLOCK, KC_F12, KC_F1, KC_F2, KC_F3, QK_BOOT, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO)
 };
 
 
@@ -215,9 +228,29 @@ void leader_end_user(void) {
 
 /* QMK functions */
 
+static bool ctl_bspc_combo_active = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (!process_achordion(keycode, record)) return false;
     if (!process_layer_lock(keycode, record, LLOCK)) return false;
+
+    switch (keycode) {
+        case CTL_BSPC_COMBO:
+            if (record->event.pressed) {
+                tap_code16(LCTL(KC_BSPC));
+                ctl_bspc_combo_active = true;
+            } else {
+                ctl_bspc_combo_active = false;
+            }
+            return false;
+        case KC_D:
+            if (ctl_bspc_combo_active) {
+                if (record->event.pressed) {
+                    tap_code16(LCTL(KC_BSPC));
+                }
+                return false;
+            }
+    }
 
     return true; // Process all other keycodes normally
 }
