@@ -20,7 +20,6 @@
 
 enum custom_keycodes {
     LLOCK = SAFE_RANGE,
-    BSPC_COMBO,
 };
 
 enum td_keycodes {
@@ -55,6 +54,10 @@ void lc_reset(tap_dance_state_t *state, void *user_data);
 /* Combos */
 
 enum combos {
+    COMBO_J,
+    COMBO_X,
+    COMBO_Z,
+
     COMBO_OSL_FN,
     COMBO_GUI,
 
@@ -68,10 +71,13 @@ enum combos {
     COMBO_OSM_RSHFT,
     COMBO_OSM_RALT,
 
-    COMBO_ENT,
-    COMBO_BSPC_1H,
-    COMBO_BSPC,
+    COMBO_BSPC_LHS,
+    COMBO_ENT_LHS,
 };
+
+const uint16_t PROGMEM j_combo[] = {KC_F, KC_P, COMBO_END};
+const uint16_t PROGMEM x_combo[] = {KC_K, KC_C, COMBO_END};
+const uint16_t PROGMEM z_combo[] = {KC_W, KC_F, COMBO_END};
 
 const uint16_t PROGMEM osl_fun_combo[] = {LTHUMB, RTHUMB, COMBO_END};
 const uint16_t PROGMEM gui_combo[] = {LTHUMB, KC_G, COMBO_END};
@@ -86,11 +92,14 @@ const uint16_t PROGMEM osm_rctl_combo[] = {RCTL_T(KC_N), KC_L, COMBO_END};
 const uint16_t PROGMEM osm_rshft_combo[] = {RSFT_T(KC_E), KC_U, COMBO_END};
 const uint16_t PROGMEM osm_ralt_combo[] = {RALT_T(KC_I), KC_Y, COMBO_END};
 
-const uint16_t PROGMEM ent_combo[] = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM bspc_1h_combo[] = {KC_W, KC_F, COMBO_END};
-const uint16_t PROGMEM bspc_combo[] = {LSFT_T(KC_S), KC_H, COMBO_END};
+const uint16_t PROGMEM bspc_lhs_combo[] = {KC_W, KC_P, COMBO_END};
+const uint16_t PROGMEM ent_lhs_combo[] = {KC_K, KC_D, COMBO_END};
 
 combo_t key_combos[] = {
+    [COMBO_J] = COMBO(j_combo, KC_J),
+    [COMBO_X] = COMBO(x_combo, KC_X),
+    [COMBO_Z] = COMBO(z_combo, KC_Z),
+    
     [COMBO_OSL_FN]  = COMBO(osl_fun_combo, OSL(NAV)),
     [COMBO_GUI] = COMBO(gui_combo, KC_LGUI),
 
@@ -104,19 +113,17 @@ combo_t key_combos[] = {
     [COMBO_OSM_RSHFT] = COMBO(osm_rshft_combo, OSM(MOD_RSFT)),
     [COMBO_OSM_RALT] = COMBO(osm_ralt_combo, OSM(MOD_RALT)),
 
-    [COMBO_ENT] = COMBO(ent_combo, KC_ENT),
-    [COMBO_BSPC_1H] = COMBO(bspc_1h_combo, KC_BSPC),
-    [COMBO_BSPC] = COMBO(bspc_combo, BSPC_COMBO),
+    [COMBO_BSPC_LHS] = COMBO(bspc_lhs_combo, KC_BSPC),
+    [COMBO_ENT_LHS] = COMBO(ent_lhs_combo, KC_ENT),
 };
-
 
 /* Key mapping */
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_LAYER0] = LAYOUT(KC_NO, KC_NO, KC_W, KC_F, KC_P, KC_B, KC_J, KC_L, KC_U, KC_Y, KC_NO, KC_NO, KC_NO, KC_A, LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G, KC_M, RCTL_T(KC_N), RSFT_T(KC_E), RALT_T(KC_I), KC_O, KC_NO, KC_NO, KC_Z, KC_X, KC_C, KC_D, KC_V, KC_K, KC_H, KC_COMM, KC_DOT, KC_Q, KC_NO, KC_NO, LTHUMB, KC_NO, KC_NO, RTHUMB, KC_NO),
-    [_LAYER1] = LAYOUT(KC_NO, KC_NO, KC_LBRC, KC_RBRC, KC_GRV, KC_CIRC, KC_PIPE, KC_DQUO, KC_ASTR, KC_SLSH, KC_NO, KC_NO, KC_NO, KC_DLR, KC_LPRN, KC_RPRN, LCTL_T(KC_SCLN), KC_AT, KC_AMPR, RCTL_T(KC_EQL), KC_PLUS, KC_MINS, KC_EXLM, KC_NO, KC_NO, KC_PERC, KC_LCBR, KC_RCBR, KC_COLN, KC_BSLS, KC_HASH, KC_QUOT, KC_LT, KC_GT, KC_QUES, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
-    [_LAYER2] = LAYOUT(KC_NO, KC_NO, KC_ESC, KC_DEL, KC_TAB, TD(LOCK_COMPUTER), KC_HOME, KC_PGUP, KC_PGDN, KC_END, KC_NO, KC_NO, KC_NO, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, KC_NO, KC_NO, LCTL(KC_Z), LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), DM_PLY1, KC_UNDS, CW_TOGG, KC_DOT, DM_REC1, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
-    [_LAYER3] = LAYOUT(KC_NO, KC_NO, KC_MUTE, KC_VOLD, KC_VOLU, KC_MPLY, KC_F10, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO, KC_NO, KC_LEFT, LALT_T(KC_DOWN), LSFT_T(KC_UP), LCTL_T(KC_RGHT), KC_PSCR, KC_F11, RCTL_T(KC_F4), RSFT_T(KC_F5), RALT_T(KC_F6), OSM(MOD_RGUI), KC_NO, KC_NO, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, LLOCK, KC_F12, KC_F1, KC_F2, KC_F3, QK_BOOT, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO)
+    [_LAYER0] = LAYOUT(KC_NO, KC_NO, KC_W, KC_F, KC_P, KC_NO, KC_NO, KC_L, KC_U, KC_Y, KC_NO, KC_NO, KC_NO, KC_A, LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G, KC_M, RCTL_T(KC_N), RSFT_T(KC_E), RALT_T(KC_I), KC_O, KC_NO, KC_NO, KC_Q, KC_K, KC_C, KC_D, KC_V, KC_B, KC_H, KC_BSPC, KC_QUOT, KC_ENT, KC_NO, KC_NO, LTHUMB, KC_NO, KC_NO, RTHUMB, KC_NO),
+    [_LAYER1] = LAYOUT(KC_NO, KC_NO, KC_LBRC, KC_RBRC, KC_GRV, KC_NO, KC_NO, KC_BSLS, KC_ASTR, KC_SLSH, KC_NO, KC_NO, KC_NO, KC_DLR, KC_LPRN, KC_RPRN, LCTL_T(KC_SCLN), KC_AT, KC_AMPR, RCTL_T(KC_EQL), KC_PLUS, KC_MINS, KC_EXLM, KC_NO, KC_NO, KC_PERC, KC_LCBR, KC_RCBR, KC_COLN, KC_HASH, KC_PIPE, KC_UNDS, KC_COMM, KC_DOT, KC_QUES, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
+    [_LAYER2] = LAYOUT(KC_NO, KC_NO, KC_ESC, KC_DEL, KC_TAB, KC_NO, KC_NO, KC_HOME, KC_PGUP, QK_DYNAMIC_MACRO_PLAY_1, KC_NO, KC_NO, KC_NO, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, KC_NO, KC_NO, LCTL(KC_Z), LCTL(KC_Y), LCTL(KC_C), LCTL(KC_V), TD(LOCK_COMPUTER), CW_TOGG, KC_END, KC_PGDN, KC_DOT, QK_DYNAMIC_MACRO_RECORD_START_1, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
+    [_LAYER3] = LAYOUT(KC_NO, KC_NO, KC_VOLD, KC_VOLU, KC_MPLY, KC_NO, KC_NO, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO, KC_NO, KC_LEFT, LALT_T(KC_DOWN), LSFT_T(KC_UP), LCTL_T(KC_RGHT), KC_PSCR, KC_F11, RCTL_T(KC_F4), RSFT_T(KC_F5), RALT_T(KC_F6), KC_F10, KC_NO, KC_NO, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, LLOCK, KC_F12, KC_F1, KC_F2, KC_F3, QK_BOOT, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO)
 };
 
 
@@ -200,29 +207,9 @@ void leader_end_user(void) {
 
 /* QMK functions */
 
-static bool bspc_combo_active = false;
-
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (!process_achordion(keycode, record)) return false;
     if (!process_layer_lock(keycode, record, LLOCK)) return false;
-
-    switch (keycode) {
-        case BSPC_COMBO:
-            if (record->event.pressed) {
-                tap_code(KC_BSPC);
-                bspc_combo_active = true;
-            } else {
-                bspc_combo_active = false;
-            }
-            return false;
-        case KC_H:
-            if (bspc_combo_active) {
-                if (record->event.pressed) {
-                    tap_code(KC_BSPC);
-                }
-                return false;
-            }
-    }
 
     return true; // Process all other keycodes normally
 }
@@ -254,7 +241,7 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
 }
 
 bool get_retro_tapping(uint16_t keycode, keyrecord_t* record) {
-    return !is_thumb_key(record);
+    return !is_thumb_key(record) && keycode != LSFT_T(KC_S);
 }
 
 bool caps_word_press_user(uint16_t keycode) {
