@@ -97,7 +97,7 @@
     [
       "KC_NO",
       "KC_NO",
-      "ANY(ESC_LOCK)",
+      "ANY(TD(ESC_LOCK))",
       "KC_DEL",
       "KC_TAB",
       "KC_NO",

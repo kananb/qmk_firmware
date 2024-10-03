@@ -67,6 +67,7 @@ enum combos {
 
     COMBO_OSL_FN,
     COMBO_GUI,
+    COMBO_BOOT,
 
     COMBO_LLEAD,
     COMBO_RLEAD,
@@ -96,6 +97,7 @@ const uint16_t PROGMEM f12_combo[] = {KC_F1, KC_F2, COMBO_END};
 
 const uint16_t PROGMEM osl_fun_combo[] = {LTHUMB, RTHUMB, COMBO_END};
 const uint16_t PROGMEM gui_combo[] = {LTHUMB, KC_G, COMBO_END};
+const uint16_t PROGMEM boot_combo[] = {KC_V, KC_D, KC_H, KC_ENT, COMBO_END};
 
 const uint16_t PROGMEM llead_combo[] = {LCTL_T(KC_T), KC_G, COMBO_END};
 const uint16_t PROGMEM rlead_combo[] = {RCTL_T(KC_N), KC_M, COMBO_END};
@@ -125,6 +127,7 @@ combo_t key_combos[] = {
     
     [COMBO_OSL_FN]  = COMBO(osl_fun_combo, OSL(NAV)),
     [COMBO_GUI] = COMBO(gui_combo, KC_LGUI),
+    [COMBO_BOOT] = COMBO(boot_combo, QK_BOOT),
 
     [COMBO_LLEAD] = COMBO(llead_combo, QK_LEAD),
     [COMBO_RLEAD] = COMBO(rlead_combo, QK_LEAD),
@@ -148,7 +151,7 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LAYER0] = LAYOUT(KC_NO, KC_NO, KC_W, KC_F, KC_P, KC_NO, KC_NO, KC_L, KC_U, KC_Y, KC_NO, KC_NO, KC_NO, KC_A, LALT_T(KC_R), LSFT_T(KC_S), LCTL_T(KC_T), KC_G, KC_M, RCTL_T(KC_N), RSFT_T(KC_E), RALT_T(KC_I), KC_O, KC_NO, KC_NO, KC_NO, KC_V, KC_C, KC_D, KC_B, KC_K, KC_H, KC_BSPC, KC_ENT, KC_NO, KC_NO, KC_NO, LTHUMB, KC_NO, KC_NO, RTHUMB, KC_NO),
     [_LAYER1] = LAYOUT(KC_NO, KC_NO, KC_LBRC, KC_RBRC, KC_GRV, KC_NO, KC_NO, KC_DQUO, KC_ASTR, KC_SLSH, KC_NO, KC_NO, KC_NO, KC_QUES, KC_LPRN, KC_RPRN, LCTL_T(KC_SCLN), KC_AT, KC_AMPR, RCTL_T(KC_EQL), KC_PLUS, KC_MINS, KC_EXLM, KC_NO, KC_NO, KC_NO, KC_LCBR, KC_RCBR, KC_COLN, KC_HASH, KC_BSLS, KC_QUOT, KC_COMM, KC_DOT, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
-    [_LAYER2] = LAYOUT(KC_NO, KC_NO, ESC_LOCK, KC_DEL, KC_TAB, KC_NO, KC_NO, KC_PLUS, KC_MINS, KC_SLSH, KC_NO, KC_NO, KC_NO, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, KC_NO, KC_NO, KC_NO, LCTL(KC_Z), LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), KC_DLR, KC_SPC, KC_BSPC, KC_DOT, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
+    [_LAYER2] = LAYOUT(KC_NO, KC_NO, TD(ESC_LOCK), KC_DEL, KC_TAB, KC_NO, KC_NO, KC_PLUS, KC_MINS, KC_SLSH, KC_NO, KC_NO, KC_NO, KC_1, LALT_T(KC_2), LSFT_T(KC_3), LCTL_T(KC_4), KC_5, KC_6, RCTL_T(KC_7), RSFT_T(KC_8), RALT_T(KC_9), KC_0, KC_NO, KC_NO, KC_NO, LCTL(KC_Z), LCTL(KC_C), LCTL(KC_V), LCTL(KC_Y), KC_DLR, KC_SPC, KC_BSPC, KC_DOT, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO),
     [_LAYER3] = LAYOUT(KC_NO, KC_NO, KC_VOLD, KC_VOLU, KC_MPLY, KC_NO, KC_NO, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO, KC_NO, KC_LEFT, LALT_T(KC_DOWN), LSFT_T(KC_UP), LCTL_T(KC_RGHT), KC_PSCR, KC_F10, RCTL_T(KC_F4), RSFT_T(KC_F5), RALT_T(KC_F6), LLOCK, KC_NO, KC_NO, KC_NO, KC_PGDN, KC_PGUP, DM_PLY1, DM_REC1, KC_F11, KC_F1, KC_F2, KC_F3, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_TRNS, KC_NO)    
 };
 
@@ -203,7 +206,6 @@ void el_finished(tap_dance_state_t *state, void *user_data) {
             tap_code16(LGUI(KC_ESC));
             break;
         default:
-            tap_code(KC_ESC);
             break; 
     }
 }
@@ -229,8 +231,6 @@ void leader_end_user(void) {
         tap_code16(KC_COLN);
         tap_code(KC_W);
         tap_code(KC_ENT);
-    } else if (leader_sequence_four_keys(KC_B, KC_O, KC_O, KC_T)) {
-        tap_code16(QK_BOOT);
     }
 }
 
@@ -239,6 +239,10 @@ void leader_end_user(void) {
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (!process_achordion(keycode, record)) return false;
     if (!process_layer_lock(keycode, record, LLOCK)) return false;
+
+    if (keycode == TD(ESC_LOCK)) {
+        if (record->event.pressed) tap_code(KC_ESC);
+    }
 
     return true; // Process all other keycodes normally
 }
@@ -255,12 +259,14 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t* record) {
     Side side = side_of_key(record);
+    uint8_t row = record->event.key.row;
     uint8_t col = record->event.key.col;
 
     if ((side == LEFT && col <= 1) || (side == RIGHT && col >= 4))
-        return TAPPING_TERM + 200; // Increase tapping term for pinky keys.
+        return TAPPING_TERM + 150; // Increase tapping term for pinky keys.
     else if ((side == LEFT && col == 2) || (side == RIGHT && col == 3))
-        return TAPPING_TERM + 70; // Increase tapping term for ring keys.
+        if (row == 0) return TAPPING_TERM - 85; // Decrease tapping term for esc_lock tap dance.
+        else return TAPPING_TERM + 70; // Increase tapping term for ring keys.
     else if (is_thumb_key(record))
         return TAPPING_TERM + 30; // Increase tapping term for thumb keys.
     else return TAPPING_TERM; // Otherwise, force hold and disable key repeating.
