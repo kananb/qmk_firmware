@@ -85,10 +85,10 @@ enum combos {
     COMBO_ENT_LHS,
 };
 
-const uint16_t PROGMEM j_combo[] = {KC_F, KC_P, COMBO_END};
+const uint16_t PROGMEM j_combo[] = {KC_C, KC_D, COMBO_END};
 const uint16_t PROGMEM q_combo[] = {KC_W, KC_F, COMBO_END};
 const uint16_t PROGMEM x_combo[] = {KC_V, KC_C, COMBO_END};
-const uint16_t PROGMEM z_combo[] = {KC_C, KC_D, COMBO_END};
+const uint16_t PROGMEM z_combo[] = {KC_F, KC_P, COMBO_END};
 
 const uint16_t PROGMEM unds_combo[] = {KC_H, KC_BSPC, COMBO_END};
 const uint16_t PROGMEM astr_combo[] = {KC_PLUS, KC_MINS, COMBO_END};
