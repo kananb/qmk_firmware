@@ -251,6 +251,7 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
     switch (combo->keycode) {
         case KC_X:
         case KC_Q:
+        case KC_J:
             return COMBO_TERM + 20; // Increase combo term for ring keys.
     }
 
