@@ -67,6 +67,7 @@ enum combos {
 
     COMBO_OSL_FN,
     // COMBO_GUI,
+    COMBO_CW,
     COMBO_BOOT,
 
     COMBO_LLEAD,
@@ -85,18 +86,19 @@ enum combos {
     COMBO_ENT_LHS,
 };
 
-const uint16_t PROGMEM j_combo[] = {KC_Y, KC_P, COMBO_END};
-const uint16_t PROGMEM q_combo[] = {KC_L, KC_Y, COMBO_END};
-const uint16_t PROGMEM x_combo[] = {KC_V, KC_D, COMBO_END};
-const uint16_t PROGMEM z_combo[] = {KC_H, KC_BSPC, COMBO_END};
+const uint16_t PROGMEM j_combo[] = {KC_G, KC_K, COMBO_END};
+const uint16_t PROGMEM q_combo[] = {KC_W, KC_V, COMBO_END};
+const uint16_t PROGMEM x_combo[] = {KC_M, KC_B, COMBO_END};
+const uint16_t PROGMEM z_combo[] = {KC_V, KC_D, COMBO_END};
 
-const uint16_t PROGMEM unds_combo[] = {KC_W, KC_V, COMBO_END};
+const uint16_t PROGMEM unds_combo[] = {KC_H, KC_BSPC, COMBO_END};
 const uint16_t PROGMEM astr_combo[] = {KC_PLUS, KC_MINS, COMBO_END};
 const uint16_t PROGMEM f12_combo[] = {KC_F1, KC_F2, COMBO_END};
 // const uint16_t PROGMEM esc_combo[] = {KC_W, KC_F, KC_P, COMBO_END};
 
 const uint16_t PROGMEM osl_fun_combo[] = {LTHUMB, RTHUMB, COMBO_END};
 // const uint16_t PROGMEM gui_combo[] = {LTHUMB, KC_G, COMBO_END};
+const uint16_t PROGMEM cw_combo[] = {LSFT_T(KC_S), LCTL_T(KC_T), RCTL_T(KC_N), RSFT_T(KC_E), COMBO_END};
 const uint16_t PROGMEM boot_combo[] = {KC_W, KC_D, KC_H, KC_ENT, COMBO_END};
 
 const uint16_t PROGMEM llead_combo[] = {LCTL_T(KC_T), KC_G, COMBO_END};
@@ -127,6 +129,7 @@ combo_t key_combos[] = {
     
     [COMBO_OSL_FN]  = COMBO(osl_fun_combo, OSL(NAV)),
     // [COMBO_GUI] = COMBO(gui_combo, KC_LGUI),
+    [COMBO_CW] = COMBO(cw_combo, CW_TOGG),
     [COMBO_BOOT] = COMBO(boot_combo, QK_BOOT),
 
     [COMBO_LLEAD] = COMBO(llead_combo, QK_LEAD),
