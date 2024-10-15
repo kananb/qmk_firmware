@@ -87,6 +87,7 @@ enum combos {
     COMBO_OSL_NUM,
     COMBO_OSL_FUN,
 
+    COMBO_CW,
     COMBO_BOOT,
 
     COMBO_BSPC_LHS,
@@ -108,6 +109,7 @@ const uint16_t PROGMEM osl_sym_ops_combo[] = {KC_E, KC_COMM, COMBO_END};
 const uint16_t PROGMEM osl_num_combo[] = {KC_T, KC_D, COMBO_END};
 const uint16_t PROGMEM osl_fun_combo[] = {KC_S, KC_V, COMBO_END};
 
+const uint16_t PROGMEM cw_combo[] = {KC_S, KC_T, KC_N, KC_E, COMBO_END};
 const uint16_t PROGMEM boot_combo[] = {KC_W, KC_D, KC_H, KC_DOT, COMBO_END};
 
 const uint16_t PROGMEM bspc_lhs_combo[] = {KC_Y, KC_S, COMBO_END};
@@ -129,6 +131,7 @@ combo_t key_combos[] = {
     [COMBO_OSL_NUM] = COMBO(osl_num_combo, OSL_NUM),
     [COMBO_OSL_FUN] = COMBO(osl_fun_combo, OSL_FUN),
     
+    [COMBO_CW] = COMBO(cw_combo, CW_TOGG),
     [COMBO_BOOT] = COMBO(boot_combo, QK_BOOT),
 
     [COMBO_BSPC_LHS] = COMBO(bspc_lhs_combo, KC_BSPC),
@@ -199,6 +202,27 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
     }
 
     return COMBO_TERM;
+}
+
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_Z:
+            add_weak_mods(MOD_BIT(KC_LSFT));
+            return true;
+        
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_MINS:
+        case KC_UNDS:
+            return true;
+        
+        default:
+            return false;
+    }
+
+    return false;
 }
 
 
